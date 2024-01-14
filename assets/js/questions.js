@@ -1,5 +1,5 @@
 
-var questions = [
+var question_list = [
       {
         "question": "What does HTML stand for?",
         "options": ["Hyper Text Markup Language", "High-level Text Management Language", "Home Tool Markup Language", "Hyperlink and Text Markup Language"],
