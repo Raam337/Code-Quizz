@@ -15,12 +15,25 @@ var q_title = document.getElementById("question-title");
 
 //Main code
 btn.addEventListener("click", gamestart);
-var timeLeft = 10;
+var timeLeft = 100;
 var current_question = 0;
+var score = 0;
 
 choices_wrapper.addEventListener("click", function(event){
-    var answer = event.target.innerText;
-
+    var user_answer = event.target.innerText;
+    if(user_answer === question_list[current_question].correct_answer){
+      score++;
+    } else {
+      timeLeft-= 10;
+      time.textContent = timeLeft;
+    }
+    current_question++;
+    if(current_question < question_list.length){
+      renderQuestion(current_question);
+    } else {
+      console.log(score);
+    }
+    
 
 })
 
