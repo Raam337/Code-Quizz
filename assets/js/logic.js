@@ -9,13 +9,16 @@ var feedback = document.getElementById("feedback");
 var time = document.getElementById("time");
 var choices_wrapper = document.getElementById("choices");
 var choice_list = choices_wrapper.querySelectorAll("div");
+var score_field = document.getElementById("final-score");
+var initials = document.getElementById("initials");
+var submit_btn = document.getElementById("submit");
 
 var q_title = document.getElementById("question-title");
 
 
 //Main code
 btn.addEventListener("click", gamestart);
-var timeLeft = 100;
+var timeLeft = 10;
 var current_question = 0;
 var score = 0;
 
@@ -25,36 +28,39 @@ choices_wrapper.addEventListener("click", function(event){
       score++;
     } else {
       timeLeft-= 10;
-      time.textContent = timeLeft;
+      if(timeLeft <= 0){
+        stopGame();
+        return;
+      } else {
+        time.textContent = timeLeft;
+      }
     }
     current_question++;
+    console.log("+1");
     if(current_question < question_list.length){
       renderQuestion(current_question);
     } else {
-      console.log(score);
+      stopGame();
     }
     
 
 })
 
-
-
-
-
-
 //Functions
-function gamestart(event){
-    start_screen.classList.add("hide");
-    q_field.classList.remove("hide");
+function gamestart(){
+    toggle_elem(start_screen);
+    toggle_elem(q_field);
     startTimer();
-    renderQuestion(2);
+    renderQuestion(0);
 }
 
+var timeInterval;
 function startTimer(){
     time.textContent = timeLeft;
-    var timeInterval = setInterval(function () {
-        if(timeLeft === 0){
-          clearInterval(timeInterval);
+    timeInterval = setInterval(function () {
+        if(timeLeft <= 0){
+          stopGame();
+          return;
         } else {
           timeLeft--;
         }
@@ -63,12 +69,33 @@ function startTimer(){
 }
 
 function renderQuestion(n){
-    q_title.textContent = question_list[n].question;
+    q_title.textContent = (current_question+1) + ". " + question_list[n].question;
     for (let i = 0; i < 4; i++) {
         choice_list[i].textContent = question_list[n].options[i];
     }
 }
 
 function stopGame(){
+  clearInterval(timeInterval);
+  toggle_elem(q_field);
+  toggle_elem(end_screen);
+  time.textContent = 0;
+  score_field.textContent = `${score}/ ${question_list.length}`
   
 }
+
+function toggle_elem(elem){
+  if(elem.classList.contains("hide")){
+    elem.classList.remove("hide")
+  } else {
+    elem.classList.add("hide");
+  }
+}
+
+
+submit_btn.addEventListener("submit", function(){
+  var score_list = localStorage.getItem("score_list");
+  score_list.push(initials.textContent);
+  localStorage.setItem("score_list", score_list)
+
+})
