@@ -68,3 +68,7 @@ function renderQuestion(n){
         choice_list[i].textContent = question_list[n].options[i];
     }
 }
+
+function stopGame(){
+  
+}
