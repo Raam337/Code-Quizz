@@ -11,23 +11,27 @@ var choices_wrapper = document.getElementById("choices");
 var choice_list = choices_wrapper.querySelectorAll("div");
 var score_field = document.getElementById("final-score");
 var initials = document.getElementById("initials");
-var submit_btn = document.getElementById("submit");
+var submit_btn = document.getElementById("submit1");
 
 var q_title = document.getElementById("question-title");
 
 
 //Main code
 btn.addEventListener("click", gamestart);
-var timeLeft = 10;
+var timeLeft = 70;
 var current_question = 0;
 var score = 0;
+var correctAudio = new Audio("assets/sfx/correct.wav");
+var mistakeAudio = new Audio("assets/sfx/incorrect.wav");
 
 choices_wrapper.addEventListener("click", function(event){
     var user_answer = event.target.innerText;
     if(user_answer === question_list[current_question].correct_answer){
       score++;
+      correctAudio.play();
     } else {
       timeLeft-= 10;
+      mistakeAudio.play();
       if(timeLeft <= 0){
         stopGame();
         return;
@@ -36,7 +40,6 @@ choices_wrapper.addEventListener("click", function(event){
       }
     }
     current_question++;
-    console.log("+1");
     if(current_question < question_list.length){
       renderQuestion(current_question);
     } else {
@@ -80,7 +83,7 @@ function stopGame(){
   toggle_elem(q_field);
   toggle_elem(end_screen);
   time.textContent = 0;
-  score_field.textContent = `${score}/ ${question_list.length}`
+  score_field.textContent = `${score}/${question_list.length}`
   
 }
 
@@ -93,9 +96,11 @@ function toggle_elem(elem){
 }
 
 
-submit_btn.addEventListener("submit", function(){
-  var score_list = localStorage.getItem("score_list");
-  score_list.push(initials.textContent);
-  localStorage.setItem("score_list", score_list)
+submit_btn.addEventListener("click", function(event){
+  var score_list = JSON.parse(localStorage.getItem("score_list")) || [];
+  score_list.push(`${initials.value} - ${score}/${question_list.length}`);
+  localStorage.setItem("score_list", JSON.stringify(score_list));
+
+  window.location.href = "../highscores.html";
 
 })

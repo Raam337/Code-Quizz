@@ -103,3 +103,9 @@ li:nth-child(odd) {
 .choices div:hover{
   background-color: var(--color2);
 }
+
+#warn{
+  font-weight: bold;
+  font-style: italic;
+  color: red;
+}
