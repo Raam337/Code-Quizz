@@ -101,6 +101,6 @@ submit_btn.addEventListener("click", function(event){
   score_list.push(`${initials.value} - ${score}/${question_list.length}`);
   localStorage.setItem("score_list", JSON.stringify(score_list));
 
-  window.location.href = "./highscores.html";
+  window.location.href = "highscores.html";
 
 })
